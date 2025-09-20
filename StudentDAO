@@ -1,0 +1,49 @@
+package dao;
+
+import db.FileHandler;
+import model.Student;
+import java.util.List;
+
+public class StudentDAO {
+    private List<Student> students;
+
+    public StudentDAO() {
+        students = FileHandler.loadStudents();
+    }
+
+    public void addStudent(Student s) {
+        students.add(s);
+        FileHandler.saveStudents(students);
+    }
+
+    public List<Student> getAllStudents() {
+        return students;
+    }
+
+    public void updateStudent(int index, Student s) {
+        if (index >= 0 && index < students.size()) {
+            students.set(index, s);
+            FileHandler.saveStudents(students);
+        }
+    }
+
+    public void deleteStudent(int index) {
+        if (index >= 0 && index < students.size()) {
+            students.remove(index);
+            FileHandler.saveStudents(students);
+        }
+    }
+
+    public Student getTopper() {
+        Student top = null;
+        double max = -1;
+        for (Student s : students) {
+            double p = s.getPercentage();
+            if (p > max) {
+                max = p;
+                top = s;
+            }
+        }
+        return top;
+    }
+}
